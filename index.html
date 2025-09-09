@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <!-- スマホでの表示倍率/幅を適切にする -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>深煎りと白 | 渋めで上質なカフェ</title>
+
+  <!-- 検索エンジン向けの要約文（SEO） -->
+  <meta name="description" content="ミルクたっぷりのカフェオレと、厳選したコーヒー豆が自慢の深煎りと白。落ち着いた渋めの雰囲気で至福の一杯を。" />
+
+  <!-- SNSシェア用（OGP） -->
+  <meta property="og:title" content="深煎りと白" />
+  <meta property="og:description" content="ミルクたっぷりのカフェオレと、厳選したコーヒー豆が自慢。" />
+  <meta property="og:type" content="website" />
+  <!-- サムネイル用画像（仮） -->
+  <meta property="og:image" content="https://tse4.mm.bing.net/th/id/OIP.gLUBB5d0XopfYuucVw7EUAHaE8?pid=Api" />
+
+  <!-- モバイルブラウザのツールバー色 -->
+  <meta name="theme-color" content="#0f0f0f" />
+
+  <style>
+    /* ===========================
+       カラーや共通の変数定義
+       =========================== */
+    :root {
+      --bg: #0f0f0f;      /* 背景色（ダーク） */
+      --fg: #e9e4dc;      /* 文字色（明るめベージュ） */
+      --muted: #b8b2a7;   /* 補助テキスト色 */
+      --accent: #b17f49;  /* アクセント（ボタンやリンク） */
+      --accent-2: #6b4f3a;/* バッジ等の濃いアクセント */
+      --card: #171717;    /* カードの背景色 */
+      --line: #2a2a2a;    /* 枠線の色 */
+    }
+
+    /* ページ全体の基本設定 */
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      color: var(--fg);
+      background: var(--bg);
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.7;
+      letter-spacing: 0.02em;
+      padding-top: 72px; /* 固定ヘッダーの高さ分だけ本文を下げる */
+    }
+
+    /* リンク */
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* 幅を揃えるための中央寄せコンテナ */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+    /* ===== ヘッダー（常に上に固定） ===== */
+    header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background: rgba(15,15,15,.9); /* 半透明の黒背景 */
+      backdrop-filter: blur(6px);     /* 背景を少しぼかす */
+      border-bottom: 1px solid var(--line);
+    }
+    /* ロゴとナビを横並びに配置 */
+    .nav { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .brand { font-weight: 700; font-size: 20px; letter-spacing: 0.06em; }
+    .nav a { margin-left: 18px; color: var(--fg); opacity: .9; }
+    .nav a:hover { opacity: 1; }
+
+    /* ===== ヒーロー（トップの大きな画像） ===== */
+    .hero {
+      position: relative; width: 100%;
+      /* スマホは16:9で見せる */
+      aspect-ratio: 16/9;
+      display: grid; place-items: center; /* 中央寄せ */
+      background:
+        radial-gradient(ellipse at center, rgba(0,0,0,.45), rgba(0,0,0,.85)), /* 文字が読みやすいよう暗くする */
+        url('https://tse2.mm.bing.net/th/id/OIP.YbPWUq8l4o7eM6WpOz7fEQHaE8?pid=Api') center/cover no-repeat;
+      border-bottom: 1px solid var(--line);
+    }
+    /* PCでは高さを60vhにしてダイナミックに */
+    @media (min-width: 900px) {
+      .hero { aspect-ratio: auto; height: 60vh; min-height: 420px; }
+    }
+    .hero-inner { text-align: center; padding: 20px; }
+    .hero h1 { font-size: clamp(28px, 4vw, 48px); margin: 0 0 12px; }
+    .hero p { color: var(--muted); margin: 0 0 18px; }
+
+    /* ボタン */
+    .btn {
+      display: inline-block; padding: 10px 18px; border-radius: 999px; border: 1px solid var(--accent);
+      color: var(--fg);
+      background: linear-gradient(180deg, rgba(177,127,73,.25), rgba(177,127,73,.05));
+      transition: transform .08s ease, filter .2s ease;
+    }
+    .btn:hover { transform: translateY(-1px); filter: brightness(1.05); text-decoration: none; }
+
+    /* ===== セクション共通 ===== */
+    section { padding: 56px 0; border-bottom: 1px solid var(--line); scroll-margin-top: 80px; }
+    h2 { font-size: 24px; margin: 0 0 8px; }
+    .lead { color: var(--muted); margin: 0 0 24px; }
+
+    /* グリッドレイアウト（2列/3列） */
+    .grid { display: grid; gap: 20px; }
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    @media (max-width: 900px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+
+    /* カードUI */
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+    .card img { width: 100%; height: 240px; object-fit: cover; display: block; filter: saturate(.9) contrast(1.05); }
+    .card-body { padding: 16px; }
+    .card h3 { margin: 0 0 8px; font-size: 18px; }
+    .badge { display: inline-block; font-size: 12px; color: #fff; background: var(--accent-2); padding: 2px 8px; border-radius: 999px; }
+
+    /* 写真ギャラリーの画像（スマホで16:9） */
+    .gallery img { width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: 12px; border: 1px solid var(--line); }
+
+    /* 2カラム（営業時間テーブル＋問い合わせ先テーブル） */
+    .columns { display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px; }
+    @media (max-width: 900px) { .columns { grid-template-columns: 1fr; } }
+
+    /* テーブル体裁 */
+    table { width: 100%; border-collapse: collapse; }
+    th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+    th { color: var(--muted); font-weight: 600; width: 28%; }
+
+    /* Googleマップを角丸で */
+    .map-wrap { border: 1px solid var(--line); border-radius: 12px; overflow: hidden; height: 380px; }
+    .map-wrap iframe { width: 100%; height: 100%; border: 0; }
+
+    /* フッター */
+    footer { text-align: center; color: var(--muted); padding: 32px 0; font-size: 14px; }
+    .note { font-size: 12px; color: var(--muted); }
+
+    /* ===== スマホ用：ナビを2段に折り返して店名を見やすく ===== */
+    @media (max-width: 520px) {
+      .nav { flex-direction: column; align-items: flex-start; height: auto; padding: 8px 0; }
+      .brand { font-size: 18px; margin-bottom: 6px; }
+      header nav { display: flex; flex-wrap: wrap; gap: 8px 12px; width: 100%; }
+      header nav a { margin-left: 0; font-size: 14px; }
+    }
+
+    /* ===== 固定ヘッダー対策：アンカーで飛んだとき見出しが隠れない余白 ===== */
+    section { scroll-margin-top: 72px; }
+    h2 { scroll-margin-top: 72px; }
+    @media (max-width: 520px) {
+      section { scroll-margin-top: 140px; }
+      h2 { scroll-margin-top: 140px; }
+    }
+  </style>
+
+  <!-- 検索エンジンに「これはカフェのサイトです」と伝える構造化データ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CafeOrCoffeeShop",
+    "name": "深煎りと白",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "愛媛県今治市○○1-1-1",
+      "addressLocality": "今治市",
+      "addressRegion": "愛媛県",
+      "postalCode": "000-0000",
+      "addressCountry": "JP"
+    },
+    "telephone": "089-000-0000",
+    "servesCuisine": "Coffee",
+    "openingHoursSpecification": [{
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+      "opens": "10:00",
+      "closes": "18:00"
+    }]
+  }
+  </script>
+</head>
+
+<body>
+  <!-- ========== ヘッダー（ロゴ＋グローバルナビ） ========== -->
+  <header>
+    <div class="container nav">
+      <div class="brand">深煎りと白</div>
+      <nav aria-label="primary">
+        <a href="#about">店について</a>
+        <a href="#highlights">おすすめ</a>
+        <a href="#gallery">写真</a>
+        <a href="#info">営業時間</a>
+        <a href="#access">アクセス</a>
+        <a href="#contact">問い合わせ</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ========== ヒーロー ========== -->
+  <section class="hero" aria-label="hero">
+    <div class="hero-inner container">
+      <h1>渋く、旨い。一杯の余韻。</h1>
+      <p>ミルクをたっぷり使ったカフェオレと、豆からこだわる上質なコーヒーを。</p>
+      <a class="btn" href="#highlights">おすすめを見る</a>
+    </div>
+  </section>
+
+  <!-- ========== 店について ========== -->
+  <section id="about" class="container">
+    <h2>店について</h2>
+    <p class="lead">静かな音楽、控えめな灯り、そして香り立つコーヒー。落ち着いた渋めの空間で、丁寧に抽出した一杯をお楽しみください。</p>
+  </section>
+
+  <!-- ========== おすすめ ========== -->
+  <section id="highlights" class="container">
+    <h2>おすすめ</h2>
+    <p class="lead">当店のいちおしは「ミルクたっぷりのカフェオレ」と、焙煎度合い・産地まで厳選した「こだわりのコーヒー豆」。</p>
+
+    <div class="grid grid-2">
+      <!-- カフェオレ -->
+      <article class="card">
+        <img loading="lazy" src="https://cdn.pixabay.com/photo/2017/03/17/10/29/coffee-2151200_1280.jpg" alt="ミルクたっぷりのカフェオレ" />
+        <div class="card-body">
+          <h3>ミルクたっぷりのカフェオレ <span class="badge">人気</span></h3>
+          <p>濃いめに抽出したエスプレッソに、甘みのある低温スチームミルクをたっぷりと。まろやかで優しい一杯です。</p>
+        </div>
+      </article>
+
+      <!-- コーヒー豆 -->
+      <article class="card">
+        <img loading="lazy" src="https://cdn.pixabay.com/photo/2017/01/21/22/29/coffee-1998416_1280.jpg" alt="厳選されたコーヒー豆" />
+        <div class="card-body">
+          <h3>こだわりのコーヒー豆</h3>
+          <p>産地・精製・焙煎を見極め、豆本来の個性を引き出します。ご自宅用に豆の販売も承ります。</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ========== 写真ギャラリー ========== -->
+  <section id="gallery" class="container">
+    <h2>写真</h2>
+    <p class="lead">店内の雰囲気や商品の一例です（フリー素材の代替画像を使用）。</p>
+
+    <div class="grid grid-3 gallery">
+      <img loading="lazy" src="https://tse4.mm.bing.net/th/id/OIP.gLUBB5d0XopfYuucVw7EUAHaE8?pid=Api" alt="明るいカフェの内装" />
+      <img loading="lazy" src="https://cdn.pixabay.com/photo/2020/08/30/20/05/coffee-shop-5530550_1280.jpg?utm_source=chatgpt.com" alt="カフェの外観" />
+      <img loading="lazy" src="https://cdn.pixabay.com/photo/2020/04/22/21/14/cows-5080091_1280.jpg" alt="牧場の風景" />
+    </div>
+
+    <p class="note">写真はフリー素材を使用したサンプルです。実店舗の写真に差し替えてください。</p>
+  </section>
+
+  <!-- ========== 営業時間・問い合わせ先 ========== -->
+  <section id="info" class="container">
+    <h2>営業時間・休業日</h2>
+
+    <div class="columns">
+      <!-- 営業時間テーブル -->
+      <div>
+        <table aria-label="営業時間">
+          <tr><th>営業時間</th><td>10:00 - 18:00</td></tr>
+          <tr><th>ラストオーダー</th><td>17:30</td></tr>
+          <tr><th>休業日</th><td>火曜日</td></tr>
+        </table>
+      </div>
+
+      <!-- 問い合わせ先テーブル -->
+      <div>
+        <table aria-label="問い合わせ先">
+          <tr><th>電話</th><td><a href="tel:0890000000">089-000-0000</a></td></tr>
+          <tr><th>メール</th><td><a href="mailto:info@example.com">info@example.com</a></td></tr>
+          <tr><th>住所</th><td>〒000-0000 愛媛県今治市○○1-1-1</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== アクセス（Googleマップ） ========== -->
+  <section id="access" class="container">
+    <h2>アクセス</h2>
+    <p class="lead">お車でお越しの際は近隣コインパーキングをご利用ください。今治駅から徒歩10分。</p>
+
+    <div class="map-wrap" aria-label="Googleマップ">
+      <iframe
+        loading="lazy"
+        src="https://maps.google.com/maps?q=%E6%84%9B%E5%AA%9B%E7%9C%8C%20%E4%BB%8A%E6%B2%BB%E5%B8%82&t=&z=14&ie=UTF8&iwloc=&output=embed"
+        allowfullscreen
+        referrerpolicy="no-referrer-when-downgrade"
+        title="地図">
+      </iframe>
+    </div>
+  </section>
+
+  <!-- ========== お問い合わせ ========== -->
+  <section id="contact" class="container">
+    <h2>お問い合わせ</h2>
+    <p class="lead">ご予約・豆のご相談はお電話またはメールにてお気軽にどうぞ。</p>
+
+    <p>
+      <!-- 電話アプリを起動 -->
+      <a class="btn" href="tel:0890000000">電話する</a>
+      <!-- メールアプリを起動 -->
+      <a class="btn" href="mailto:info@example.com" style="margin-left:8px;">メールする</a>
+    </p>
+
+    <p class="note">※Webフォームを使う場合は、FormspreeやGoogleフォームのURLを設置できます。</p>
+  </section>
+
+  <!-- ========== フッター ========== -->
+  <footer>
+    <div class="container">
+      <!-- © 西暦（JSで自動更新） -->
+      <p>© <span id="y"></span> 深煎りと白</p>
+      <p class="note">写真: フリー素材 / このサイトはPR用のサンプルです。</p>
+    </div>
+  </footer>
+
+  <script>
+    // ===== フッターの年号を自動で現在の年にする =====
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // ===== 固定ヘッダーの高さを考慮したスムーススクロール =====
+    // 仕様：
+    // - 基本：リンク先セクション全体にスクロール
+    // - #contact のみ <h2> に合わせて少し上側に止める（見出しが見やすい）
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const id = a.getAttribute('href');
+        if (!id || id === '#') return;            // 無効なアンカーは無視
+        const section = document.querySelector(id);
+        if (!section) return;                      // セクションが無ければ何もしない
+        e.preventDefault();                        // デフォルトの即時ジャンプを止める
+
+        // デフォルトはセクション全体に合わせる
+        let target = section;
+
+        // contact だけは h2 にピンポイントで合わせる（見出しが確実に見える）
+        if (id === '#contact') {
+          const h2 = section.querySelector('h2');
+          if (h2) target = h2;
+        }
+
+        // ヘッダーの高さ＋端末別の少しの余白を引いた位置へスクロール
+        const header = document.querySelector('header');
+        const headerH = header ? header.offsetHeight : 0;
+        const isMobile = window.matchMedia('(max-width: 520px)').matches;
+        const extra = isMobile ? 18 : 10;  // ちょい足しの余白（体感で見やすい値）
+
+        const top = target.getBoundingClientRect().top + window.pageYOffset - (headerH + extra);
+
+        window.scrollTo({ top, behavior: 'smooth' });
+
+        // 戻るボタン対応：URLのハッシュを更新
+        history.pushState(null, '', id);
+      });
+    });
+  </script>
+</body>
+</html>
